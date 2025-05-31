@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 )
 
 type TCPClient struct {
@@ -27,16 +28,22 @@ func (c *TCPClient) Start() {
 
 	fmt.Println("Client is running")
 
-	message := "Hello, Server!\n"
-	_, err = conn.Write([]byte(message))
-	if err != nil {
-		log.Fatalf("Error writing message: %v", err)
-	}
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		message := scanner.Text()
+		if message == "exit" {
+			break
+		}
+		_, err = conn.Write([]byte(message + "\n"))
+		if err != nil {
+			log.Fatalf("Error writing message: %v", err)
+		}
 
-	reader := bufio.NewReader(conn)
-	response, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatalf("Error reading message: %v", err)
+		reader := bufio.NewReader(conn)
+		response, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatalf("Error reading message: %v", err)
+		}
+		fmt.Println("Received message:", response)
 	}
-	fmt.Println("Received message:", response)
 }
