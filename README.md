@@ -1,33 +1,65 @@
 # TCP Chat Application
 
-This is a simple TCP-based chat application implemented in Go. It consists of a server and a client component.
+这是一个基于TCP的聊天应用，使用Go语言实现。它包含服务器和客户端两个部分。
 
-## Project Structure
-- `server/` - Server implementation
-- `client/` - Client implementation
-- `main.go` - Entry point for both server and client
+## 项目结构
+- `server/` - 服务器端实现
+- `client/` - 客户端实现
+- `main.go` - 服务器和客户端的启动入口
 
-## Current Implementation
+## 当前实现
 
-### Server
-Currently, the server is a simple echo server that:
-- Listens for incoming TCP connections
-- Receives messages from clients
-- Sends back an exact copy of received messages (with "echo: " prefix)
+### TCP 服务器
+- 实现了基本的TCP服务器功能
+- 支持并发连接处理
+- 使用goroutine处理每个连接
+- 将收到的消息原样返回（添加了"echo: "前缀）
 
-### Client
-The client:
-- Connects to the server
-- Sends messages entered by the user
-- Displays received echo messages
+### TCP 客户端
+- 实现了基本的TCP客户端功能
+- 可以连接到服务器并发送消息
+- 支持通过输入"exit"命令退出客户端
+- 使用goroutine同时处理消息的发送和接收
 
-## Usage
+### 其他实现功能
+- 模块化设计：服务器和客户端代码分离
+- go.mod 初始化：项目已初始化为Go模块
+- 已推送到GitHub：项目已托管在GitHub仓库
 
-### Start the Server
+## Todo List
+
+- [ ] 实现客户端自动重连机制
+- [ ] 实现心跳机制保持连接活跃
+- [ ] 添加登录认证流程（命令和token验证）
+- [ ] 使用context.Context统一管理生命周期
+- [ ] 设置连接超时、读写超时
+- [ ] 区分info/warn/error日志等级
+- [ ] 编写server和client的单元测试
+- [ ] 在goroutine中加入recover防止崩溃
+- [ ] 定义统一的消息协议格式或者扩展多协议解析
+- [ ] 实现多客户端通信功能
+- [ ] 添加用户身份验证
+- [ ] 实现用户加入/离开通知
+- [ ] 添加聊天室功能
+- [ ] 支持私聊消息
+- [ ] 添加命令解析器
+- [ ] 实现消息持久化存储
+- [ ] 添加客户端UI提示
+- [ ] 实现优雅的关闭机制
+- [ ] 添加详细的日志记录
+- [ ] 编写单元测试
+- [ ] 添加配置文件支持
+- [ ] 实现消息加密传输
+
+## 使用方法
+
+### 启动服务器
 ```bash
 go run main.go -mode=server -port=8080
 ```
 
-### Start a Client
+### 启动客户端
 ```bash
 go run main.go -mode=client -port=8080
+```
+
