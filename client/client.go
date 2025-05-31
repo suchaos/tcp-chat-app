@@ -28,6 +28,12 @@ func (c *TCPClient) Start() {
 
 	fmt.Println("Client is running")
 
+	go readMsg(conn)
+
+	writeMsg(err, conn)
+}
+
+func writeMsg(err error, conn net.Conn) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		message := scanner.Text()
@@ -37,13 +43,22 @@ func (c *TCPClient) Start() {
 		_, err = conn.Write([]byte(message + "\n"))
 		if err != nil {
 			log.Fatalf("Error writing message: %v", err)
+			return
 		}
+	}
+}
 
-		reader := bufio.NewReader(conn)
+func readMsg(conn net.Conn) {
+	reader := bufio.NewReader(conn)
+	for {
 		response, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatalf("Error reading message: %v", err)
+			log.Printf("Error reading message: %v", err)
+			return
 		}
-		fmt.Println("Received message:", response)
+		if response == "\n" {
+			continue
+		}
+		log.Printf("Received message: %s", response)
 	}
 }
