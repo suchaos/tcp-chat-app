@@ -48,10 +48,11 @@ func processConnect(connect net.Conn) {
 			return
 		}
 		log.Printf("Received message: %s", message)
-		_, err = connect.Write([]byte(message + "\n"))
+		_, err = connect.Write([]byte("echo:" + message + "\n"))
 		if err != nil {
 			log.Printf("Error writing message: %v", err)
 			return
 		}
+		log.Printf("Sent message: %s", message)
 	}
 }
