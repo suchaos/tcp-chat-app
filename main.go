@@ -1,10 +1,10 @@
 package main
 
 import (
-	"demo/client"
-	"demo/server"
 	"flag"
 	"fmt"
+	"github.com/suchaos/tcp-chat-app/client"
+	"github.com/suchaos/tcp-chat-app/server"
 )
 
 func main() {
